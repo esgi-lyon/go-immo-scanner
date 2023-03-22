@@ -4,9 +4,16 @@
 project = "kubernetes-go-multiapp-k8s-ingress"
 
 variable "namespace" {
-  default     = "ingress-nginx"
+  default     = "default"
   type        = string
   description = "The namespace to deploy and release to in your Kubernetes cluster."
+}
+
+locals {
+  auth = {
+    username = "loic-roux-404"
+    registryToken = file("~/config/.dockerhub-token")
+  }
 }
 
 app "go-multiapp-one" {
@@ -28,6 +35,10 @@ app "go-multiapp-one" {
         image = "go-multiapp-one"
         tag   = "1"
         local = false
+        auth = {
+          username = ""
+          registryToken = file("~/config/.dockerhub-token")
+        }
       }
     }
   }
