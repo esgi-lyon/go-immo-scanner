@@ -9,17 +9,16 @@ variable "namespace" {
   description = "The namespace to deploy and release to in your Kubernetes cluster."
 }
 
-locals {
-  auth = {
-    username = "loic-roux-404"
-    registryToken = file("~/config/.dockerhub-token")
-  }
+variable "registery_token" {
+  type    = string
+  description = "Token to login to github container registry"
 }
 
 app "go-multiapp-one" {
   labels = {
     "service" = "go-multiapp-one",
     "env"     = "dev"
+    "org.opencontainers.image.source" = "https://github.com/loic-roux-404/go-immo-scanner"
   }
 
   config {
@@ -32,13 +31,11 @@ app "go-multiapp-one" {
     use "pack" {}
     registry {
       use "docker" {
-        image = "go-multiapp-one"
+        image = "ghcr.io/loic-roux-404/go-multiapp-one"
         tag   = "1"
         local = false
-        auth = {
-          username = ""
-          registryToken = file("~/config/.dockerhub-token")
-        }
+        password = var.registery_token
+        username = "loic-roux-404"
       }
     }
   }
@@ -80,9 +77,11 @@ app "go-multiapp-two" {
     use "pack" {}
     registry {
       use "docker" {
-        image = "go-multiapp-two"
+        image = "ghcr.io/loic-roux-404/go-multiapp-two"
         tag   = "1"
         local = false
+        password = var.registery_token
+        username = "loic-roux-404"
       }
     }
   }
@@ -116,9 +115,11 @@ app "default-app" {
     use "pack" {}
     registry {
       use "docker" {
-        image = "default-app"
+        image = "ghcr.io/loic-roux-404/default-app"
         tag   = "1"
         local = false
+        password = var.registery_token
+        username = "loic-roux-404"
       }
     }
   }
