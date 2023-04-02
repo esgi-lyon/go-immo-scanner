@@ -31,11 +31,11 @@ app "go-multiapp-one" {
     use "pack" {}
     registry {
       use "docker" {
-        image = "ghcr.io/loic-roux-404/go-multiapp-one"
+        image = "loicroux/go-multiapp-one"
         tag   = "1"
         local = false
         password = var.registery_token
-        username = "loic-roux-404"
+        username = "loicroux"
       }
     }
   }
@@ -77,11 +77,11 @@ app "go-multiapp-two" {
     use "pack" {}
     registry {
       use "docker" {
-        image = "ghcr.io/loic-roux-404/go-multiapp-two"
+        image = "loicroux/go-multiapp-two"
         tag   = "1"
         local = false
         password = var.registery_token
-        username = "loic-roux-404"
+        username = "loicroux"
       }
     }
   }
@@ -115,11 +115,11 @@ app "default-app" {
     use "pack" {}
     registry {
       use "docker" {
-        image = "ghcr.io/loic-roux-404/default-app"
+        image = "loicroux/default-app"
         tag   = "1"
         local = false
         password = var.registery_token
-        username = "loic-roux-404"
+        username = "loicroux"
       }
     }
   }
