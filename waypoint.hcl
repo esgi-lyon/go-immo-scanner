@@ -9,9 +9,29 @@ variable "namespace" {
   description = "The namespace to deploy and release to in your Kubernetes cluster."
 }
 
+variable "registery_user" {
+  type    = string
+  description = "Username to login to container registry"
+}
+
 variable "registery_token" {
   type    = string
-  description = "Token to login to github container registry"
+  description = "Token to login to container registry"
+}
+
+variable "k8s_ingress_annotations" {
+  type    = map(string)
+  description = "Kubernetes annotation to make ingress working"
+  default  = {
+    "nginx.ingress.kubernetes.io/rewrite-target" = "/"
+    "kubernetes.io/ingress.class" = "nginx"
+  }
+}
+
+variable "k8s_ingress_domain" {
+  type    = string
+  description = "Kubernetes domain to use"
+  default  = "waypoint.k3s.test"
 }
 
 app "go-multiapp-one" {
@@ -35,7 +55,7 @@ app "go-multiapp-one" {
         tag   = "1"
         local = false
         password = var.registery_token
-        username = "loicroux"
+        username = var.registery_user
       }
     }
   }
@@ -54,6 +74,8 @@ app "go-multiapp-one" {
       ingress "http" {
         path_type = "Prefix"
         path      = "/app-one"
+        host = "go-multiapp.${var.k8s_ingress_domain}"
+        annotations = var.k8s_ingress_annotations
       }
     }
   }
@@ -81,7 +103,7 @@ app "go-multiapp-two" {
         tag   = "1"
         local = false
         password = var.registery_token
-        username = "loicroux"
+        username = var.registery_user
       }
     }
   }
@@ -100,6 +122,8 @@ app "go-multiapp-two" {
       ingress "http" {
         path_type = "Prefix"
         path      = "/app-two"
+        host = "go-multiapp.${var.k8s_ingress_domain}"
+        annotations = var.k8s_ingress_annotations
       }
     }
   }
@@ -119,7 +143,7 @@ app "default-app" {
         tag   = "1"
         local = false
         password = var.registery_token
-        username = "loicroux"
+        username = var.registery_user
       }
     }
   }
@@ -139,6 +163,8 @@ app "default-app" {
         default   = true
         path_type = "Prefix"
         path      = "/"
+        host = "go-multiapp.${var.k8s_ingress_domain}"
+        annotations = var.k8s_ingress_annotations
       }
     }
   }
