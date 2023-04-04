@@ -38,7 +38,6 @@ app "go-multiapp-one" {
   labels = {
     "service" = "go-multiapp-one",
     "env"     = "dev"
-    "org.opencontainers.image.source" = "https://github.com/loic-roux-404/go-immo-scanner"
   }
 
   config {
