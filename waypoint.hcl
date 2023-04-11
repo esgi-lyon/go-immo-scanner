@@ -1,7 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-project = "kubernetes-go-multiapp-k8s-ingress"
+project = "go-immo-scanner"
 
 variable "namespace" {
   default     = "default"
@@ -75,6 +75,10 @@ app "go-multiapp-one" {
         path      = "/app-one"
         host = "go-multiapp.${var.k8s_ingress_domain}"
         annotations = var.k8s_ingress_annotations
+        tls {
+            hosts = ["go-multiapp.${var.k8s_ingress_domain}"]
+            secret_name = "go-multiapp.${var.k8s_ingress_domain}-tls"
+        }
       }
     }
   }
@@ -123,6 +127,10 @@ app "go-multiapp-two" {
         path      = "/app-two"
         host = "go-multiapp.${var.k8s_ingress_domain}"
         annotations = var.k8s_ingress_annotations
+        tls {
+            hosts = ["go-multiapp.${var.k8s_ingress_domain}"]
+            secret_name = "go-multiapp.${var.k8s_ingress_domain}-tls"
+        }
       }
     }
   }
@@ -164,6 +172,10 @@ app "default-app" {
         path      = "/"
         host = "go-multiapp.${var.k8s_ingress_domain}"
         annotations = var.k8s_ingress_annotations
+        tls {
+            hosts = ["go-multiapp.${var.k8s_ingress_domain}"]
+            secret_name = "go-multiapp.${var.k8s_ingress_domain}-tls"
+        }
       }
     }
   }
